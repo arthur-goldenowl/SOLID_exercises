@@ -8,23 +8,38 @@
  * Happy coding! 🚀
  */
 
-// class EmailService {
-//     sendEmail(message: string): void {
-//         console.log(`Sending email with message: ${message}`);
-//     }
-// }
+interface NotificationService {
+  send(message: string): void;
+}
 
-// class SendNotification {
-//     private emailService: EmailService;
+class EmailService implements NotificationService {
+  send(message: string): void {
+    console.log(`Sending email with message: ${message}`);
+  }
+}
 
-//     constructor() {
-//         this.emailService = new EmailService();
-//     }
+class SMSService implements NotificationService {
+  send(message: string): void {
+    console.log(`Sending SMS with message: ${message}`);
+  }
+}
 
-//     sendNotification(message: string): void {
-//         this.emailService.sendEmail(message);
-//     }
-// }
+class SendNotification {
+  private notificationService: NotificationService;
 
-// const notification = new SendNotification();
-// notification.sendNotification("Hello, this is a notification!");
+  constructor(notificationService: NotificationService) {
+    this.notificationService = notificationService;
+  }
+
+  sendNotification(message: string): void {
+    this.notificationService.send(message);
+  }
+}
+
+const emailNotification = new SendNotification(new EmailService());
+emailNotification.sendNotification("Hello, this is an email notification");
+
+const smsNotification = new SendNotification(new SMSService());
+smsNotification.sendNotification("Hello, this is an SMS notification");
+
+export { EmailService, SMSService, SendNotification };
